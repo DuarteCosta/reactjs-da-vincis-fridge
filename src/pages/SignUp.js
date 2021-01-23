@@ -1,7 +1,15 @@
 import React, { useCallback } from "react";
 import { withRouter } from "react-router";
 import fbase from "../services/FBase";
-
+import {
+  Container,
+  Box,
+  Button,
+  Typography,
+  TextField,
+  Grid,
+  Link,
+} from "@material-ui/core";
 //history object from router
 const SignUp = ({ history }) => {
   //history gets routes
@@ -24,18 +32,51 @@ const SignUp = ({ history }) => {
 
   return (
     <div>
-      <h1> Sign up </h1>
-      <form onSubmit={handleSignUp}>
-        <label>
-          Email
-          <input name="email" type="email" placeholder="Email" />
-        </label>
-        <label>
-          Password
-          <input name="password" type="password" placeholder="Password" />
-        </label>
-        <button type="submit"> Sign Up </button>
-      </form>
+      <Box pt={10} pb={10} bgcolor="primary.main">
+        <Typography component="h1" variant="h2" align="center">
+          Da Vinci's Fridge
+        </Typography>
+      </Box>
+
+      <Container maxWidth="xs">
+        <Box pt={10}>
+          <form onSubmit={handleSignUp}>
+            <TextField
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              required
+              fullWidth
+            />
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <Grid
+              container
+              direction="row"
+              justify="flex-end"
+              alignItems="center"
+              spacing={2}
+            >
+              <Grid item>
+                <Link href="/login">Login In </Link>
+              </Grid>
+              <Grid item>
+                <Button type="submit"> Sign Up </Button>
+              </Grid>
+            </Grid>
+          </form>
+        </Box>
+      </Container>
     </div>
   );
 };
