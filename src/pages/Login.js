@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 
 //history object from router
+//use callback doesnt update everytime only when changes
 const Login = ({ history }) => {
   const handleLogin = useCallback(
     async (event) => {
@@ -85,4 +86,4 @@ const Login = ({ history }) => {
     </div>
   );
 };
-export default withRouter(Login);
+export default withRouter(Login); // gives acees to props.history

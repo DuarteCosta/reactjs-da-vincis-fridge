@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   }, []); // [] run only once when authprov is in tree
 
   if (pending) {
-    return <>Loading...</>;
+    return <>Loading...</>; //Change this
   }
   return (
     <AuthContext.Provider
