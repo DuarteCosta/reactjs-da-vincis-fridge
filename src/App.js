@@ -9,13 +9,14 @@ import { AuthProvider } from "./services/Auth";
 import PrivateRoute from "./services/PrivateRoute";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
+
 const theme = createMuiTheme({
   palette: {
     primary: {
       main: "#9575cd",
     },
     secondary: {
-      main: "#cd7595 ",
+      main: "#EF9A9A ",
     },
     // background: { paper: "#9575cd" },
   },
@@ -27,7 +28,6 @@ const theme = createMuiTheme({
       color: "white",
     },
   },
-
   props: {
     MuiButton: {
       color: "primary",
