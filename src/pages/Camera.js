@@ -1,12 +1,11 @@
 import React from "react";
-import NavBar from "../components/NavBar";
-import TopBar from "../components/TopBar";
+import TopBarBack from "../components/TopBarBack";
+
 const Camera = () => {
   return (
-    <>
-      <h1> Camera </h1>
-      <NavBar></NavBar>
-    </>
+    <div>
+      <TopBarBack></TopBarBack>
+    </div>
   );
 };
 
