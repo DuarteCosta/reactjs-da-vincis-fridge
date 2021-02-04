@@ -54,6 +54,7 @@ const Login = ({ history }) => {
               autoComplete="email"
               required
               fullWidth
+              variant="outlined"
             />
 
             <TextField
@@ -65,6 +66,7 @@ const Login = ({ history }) => {
               type="password"
               id="password"
               autoComplete="current-password"
+              variant="outlined"
             />
             <Grid
               container

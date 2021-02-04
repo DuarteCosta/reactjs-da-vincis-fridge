@@ -46,19 +46,21 @@ const SignUp = ({ history }) => {
               label="Email Address"
               name="email"
               autoComplete="email"
+              variant="outlined"
               required
               fullWidth
             />
 
             <TextField
               margin="normal"
-              required
-              fullWidth
               name="password"
               label="Password"
               type="password"
               id="password"
+              required
+              fullWidth
               autoComplete="current-password"
+              variant="outlined"
             />
             <Grid
               container

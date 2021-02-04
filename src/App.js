@@ -1,10 +1,10 @@
-import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"; // browse redirect
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Camera from "./pages/Camera";
 import Search from "./pages/Search";
+import CreateArtist from "./pages/CreateArtist";
 import { AuthProvider } from "./services/Auth";
 import PrivateRoute from "./services/PrivateRoute";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -33,10 +33,7 @@ const theme = createMuiTheme({
       color: "primary",
       variant: "contained",
     },
-    MuiTextField: {
-      variant: "outlined",
-      required: "fullWidth",
-    },
+   
   },
 });
 
@@ -53,6 +50,11 @@ const App = () => {
               <PrivateRoute exact path="/" component={Home} />
               <PrivateRoute exact path="/search" component={Search} />
               <PrivateRoute exact path="/camera" component={Camera} />
+              <PrivateRoute
+                exact
+                path="/createArtist"
+                component={CreateArtist}
+              />
               <Route exact path="/signup" component={SignUp} />
               <Route exact path="/login" component={Login} />
               <Route exact path="*" component={() => "404 NOT Found"} />
