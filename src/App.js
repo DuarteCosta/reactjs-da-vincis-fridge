@@ -4,6 +4,7 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Camera from "./pages/Camera";
 import Search from "./pages/Search";
+import Upload from "./pages/Upload";
 import CreateArtist from "./pages/CreateArtist";
 import { AuthProvider } from "./services/Auth";
 import PrivateRoute from "./services/PrivateRoute";
@@ -54,6 +55,11 @@ const App = () => {
                 exact
                 path="/createArtist"
                 component={CreateArtist}
+              />
+                <PrivateRoute
+                exact
+                path="/upload"
+                component={Upload}
               />
               <Route exact path="/signup" component={SignUp} />
               <Route exact path="/login" component={Login} />

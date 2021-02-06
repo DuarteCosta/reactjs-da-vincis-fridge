@@ -48,12 +48,15 @@ const TopBar = ({ history }) => {
   const handleCreate = () => {
     history.push("/CreateArtist");
   };
+  const handleUpload = () => {
+    history.push("/Upload");
+  };
 
   return (
     <AppBar position="static">
       <Toolbar>
         <Typography className={classes.title}>Da Vinci's Fridge</Typography>
-        <IconButton>
+        <IconButton onClick={handleUpload}>
           <CloudUploadIcon></CloudUploadIcon>
         </IconButton>
         <IconButton>

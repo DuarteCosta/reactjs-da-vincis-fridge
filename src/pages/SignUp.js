@@ -17,14 +17,20 @@ const SignUp = ({ history }) => {
     //callback only updates if componets updates
     async (event) => {
       event.preventDefault(); // prevents reloading page when user clicks
-      const { email, password } = event.target.elements; // form
+      const { email, password, name } = event.target.elements; // form
       try {
-        await fbase
+        const { user } = await fbase
           .auth()
           .createUserWithEmailAndPassword(email.value, password.value);
+       await fbase.firestore().collection("Users").doc(user.uid).set({
+          Name: name.value,
+          Email: email.value,
+        });
+      
         history.push("/"); //root path
       } catch (error) {
         alert(error);
+        console.log(error);
       }
     },
     [history]
@@ -42,6 +48,14 @@ const SignUp = ({ history }) => {
         <Box pt={10}>
           <form onSubmit={handleSignUp}>
             <TextField
+              id="name"
+              label="Name"
+              name="name"
+              variant="outlined"
+              required
+              fullWidth
+            />
+            <TextField
               id="email"
               label="Email Address"
               name="email"
@@ -49,6 +63,7 @@ const SignUp = ({ history }) => {
               variant="outlined"
               required
               fullWidth
+              margin="normal"
             />
 
             <TextField

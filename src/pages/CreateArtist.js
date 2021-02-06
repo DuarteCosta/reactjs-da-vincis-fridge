@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useContext } from "react";
 import { withRouter } from "react-router";
 //import { Link } from "react-router-dom";
 import TopBarBack from "../components/TopBarBack";
+import { AuthContext } from "../services/Auth";
 import {
   Container,
   Box,
@@ -50,6 +51,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CreateArtist = ({ history }) => {
+  const { currentUser } = useContext(AuthContext);
+
   const classes = useStyles();
   const [selectedDate, setSelectedDate] = useState(new Date("2020-12-30"));
 
@@ -61,13 +64,40 @@ const CreateArtist = ({ history }) => {
   const handleChange = (event) => {
     setEducation(event.target.value);
   };
+
+  const handleCreateArtist = useCallback(
+    //callback only updates if componets updates
+    async (event) => {
+      event.preventDefault(); // prevents reloading page when user clicks
+      const { date, education, name } = event.target.elements; // form
+      try {
+        await fbase
+
+          .firestore()
+          .collection("Users")
+          .doc(currentUser.uid)
+          .collection("Children")
+          .add({
+            Name: name.value,
+            Education: education.value,
+            Birth: date.value,
+          });
+
+        history.push("/"); //root path
+      } catch (error) {
+        alert(error);
+        console.log(error);
+      }
+    },
+    [history, currentUser]
+  );
   return (
     <div>
       <TopBarBack></TopBarBack>
       <Container maxWidth="xs">
         <Box pt={10} textAlign="right">
           <Paper>
-            <form className={classes.root}>
+            <form className={classes.root} onSubmit={handleCreateArtist}>
               <Grid
                 container
                 direction="column"
@@ -86,7 +116,7 @@ const CreateArtist = ({ history }) => {
                     id="name"
                     label="Name"
                     variant="outlined"
-                    InputLabelProps={{ required: true }}
+                    required
                   />
                 </Grid>
                 <Grid item>
@@ -105,13 +135,16 @@ const CreateArtist = ({ history }) => {
                     helperText="Select Artist's Education Stage"
                   >
                     {educations.map((option) => (
-                      <option key={option.value} value={option.value}>{option.value}</option>
+                      <option key={option.value} value={option.value}>
+                        {option.value}
+                      </option>
                     ))}
                   </TextField>
                 </Grid>
                 <Grid item>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <DatePicker
+                      id="date"
                       disableFuture
                       inputVariant="outlined"
                       openTo="year"
@@ -126,7 +159,7 @@ const CreateArtist = ({ history }) => {
                 </Grid>
 
                 <Grid item>
-                  <Fab color="primary">
+                  <Fab color="primary" type="submit">
                     <DoneIcon />
                   </Fab>
                 </Grid>
