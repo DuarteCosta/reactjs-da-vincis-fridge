@@ -5,6 +5,8 @@ import Login from "./pages/Login";
 import Camera from "./pages/Camera";
 import Search from "./pages/Search";
 import Upload from "./pages/Upload";
+import Upload2D from "./pages/Upload2D";
+import Upload3D from "./pages/Upload3D";
 import CreateArtist from "./pages/CreateArtist";
 import { AuthProvider } from "./services/Auth";
 import PrivateRoute from "./services/PrivateRoute";
@@ -28,13 +30,14 @@ const theme = createMuiTheme({
     h2: {
       color: "white",
     },
+
+    
   },
   props: {
     MuiButton: {
       color: "primary",
       variant: "contained",
     },
-   
   },
 });
 
@@ -56,11 +59,9 @@ const App = () => {
                 path="/createArtist"
                 component={CreateArtist}
               />
-                <PrivateRoute
-                exact
-                path="/upload"
-                component={Upload}
-              />
+              <PrivateRoute exact path="/upload" component={Upload} />
+              <PrivateRoute exact path="/upload2d" component={Upload2D} />
+              <PrivateRoute exact path="/upload3d" component={Upload3D} />
               <Route exact path="/signup" component={SignUp} />
               <Route exact path="/login" component={Login} />
               <Route exact path="*" component={() => "404 NOT Found"} />
