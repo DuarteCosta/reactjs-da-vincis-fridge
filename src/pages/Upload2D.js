@@ -18,9 +18,8 @@ import {
   CardActions,
 } from "@material-ui/core";
 import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
-
 import DoneIcon from "@material-ui/icons/Done";
-import { MessageTwoTone } from "@material-ui/icons";
+
 const educations = [
   { value: "Before Pre Kindergarten" },
   { value: "Pre Kindergarten" },
@@ -95,22 +94,33 @@ const Upload2D = ({ history }) => {
     setFile(event.target.files[0]);
   };
 
-  const handleSubmition = (event) => {
+  const handleSubmition = async (event) => {
     event.preventDefault();
     const { artist, educationForm, subCategory, age } = event.target.elements;
     const metadata = {
       customMetadata: {
-        'artists': artist.value,
-        'education': educationForm.value,
-        'subCategory': subCategory.value,
-        'age': age.value,
+        artists: artist.value,
+        education: educationForm.value,
+        subCategory: subCategory.value,
+        age: age.value,
       },
     };
     const storageRef = fbase
       .storage()
       .ref("Users/" + currentUser.uid + "/Pictures");
     const fileRef = storageRef.child(file.name);
-    fileRef.put(file, metadata);
+    await fileRef.put(file, metadata);
+
+    const url = await fileRef.getDownloadURL();
+    await fbase
+      .firestore()
+      .collection("Users")
+      .doc(currentUser.uid)
+      .collection("Pictures")
+      .add({
+        Url: url,
+      });
+
     history.push("/");
   };
 
