@@ -30,10 +30,6 @@ const Home = () => {
   const [photos, setPhotos] = useState([]);
   const [fullPhoto, setFullPhoto] = useState(null);
 
-  const handleClose = () => {
-    setFullPhoto(false);
-  };
-
   useEffect(() => {
     const fb = fbase.firestore();
     const unsubscribe = fb
@@ -43,9 +39,9 @@ const Home = () => {
       // .orderBy("Date", "desc")
       .onSnapshot((snapshot) => {
         const art = [];
+
         snapshot.forEach((doc) => art.push({ ...doc.data(), id: doc.id }));
         setPhotos(art);
-        console.log(art);
       });
 
     return unsubscribe;
@@ -67,7 +63,7 @@ const Home = () => {
                 src={art.Url}
                 alt=""
                 className={classes.art}
-                onClick={() => setFullPhoto(art.Url)}
+                onClick={() => setFullPhoto(art)}
               />
             </GridListTile>
           ))}
@@ -75,10 +71,10 @@ const Home = () => {
       </Box>
       <NavBar></NavBar>
       {fullPhoto ? (
-          <div>
-            <Modal handleClose={handleClose} selected={fullPhoto} />
-          </div>
-        ) : null}
+        <div>
+          <Modal Close={setFullPhoto} selected={fullPhoto} />
+        </div>
+      ) : null}
     </div>
   );
 };

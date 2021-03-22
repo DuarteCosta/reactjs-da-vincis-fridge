@@ -103,6 +103,7 @@ const Upload2D = ({ history }) => {
         education: educationForm.value,
         subCategory: subCategory.value,
         age: age.value,
+        type: "2D"
       },
     };
     const storageRef = fbase
