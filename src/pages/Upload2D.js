@@ -5,7 +5,6 @@ import fbase from "../services/FBase";
 import fridge3 from "../assets/img/FRIDGE3.jpg";
 import { AuthContext } from "../services/Auth";
 import {
-  Container,
   Box,
   Grid,
   TextField,
@@ -70,20 +69,10 @@ const Upload2D = ({ history }) => {
   const { currentUser } = useContext(AuthContext);
   const classes = useStyles();
 
-  const [education, setEducation] = useState();
   const [artists, setArtists] = useState([]);
-  const [selectedArtists, setSelectedArtists] = useState();
   const [imagePreview, setImagePreview] = useState(fridge3);
 
   const [file, setFile] = useState(null);
-
-  const handleChange = (event) => {
-    setEducation(event.target.value);
-  };
-
-  const handleChange2 = (event) => {
-    setSelectedArtists(event.target.value);
-  };
 
   const handlePreview = (event) => {
     const reader = new FileReader();
@@ -103,7 +92,7 @@ const Upload2D = ({ history }) => {
         education: educationForm.value,
         subCategory: subCategory.value,
         age: age.value,
-        type: "2D"
+        type: "2D",
       },
     };
     const storageRef = fbase
@@ -146,124 +135,119 @@ const Upload2D = ({ history }) => {
   return (
     <div>
       <TopBarBack></TopBarBack>
-      <Container maxWidth="xs">
-        <Box pt={10}>
-          <Paper className={classes.paper}>
-            <form className={classes.rootForm} onSubmit={handleSubmition}>
-              <Grid
-                container
-                spacing={3}
-                direction="row"
-                justify="space-around"
-                alignItems="stretch"
-              >
-                <Grid item xs={6}>
-                  <Grid item>
-                    <TextField
-                      className={classes.size}
-                      select
-                      margin="normal"
-                      value={selectedArtists}
-                      id="artist"
-                      label=" Select Artist"
-                      variant="outlined"
-                      onChange={handleChange2}
-                      helperText="Who made it"
-                      InputLabelProps={{ required: true, shrink: true }}
-                      SelectProps={{
-                        native: true,
-                      }}
-                    >
-                      {artists.map((option) => (
-                        <option key={option.id} value={option.id}>
-                          {option.Name}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      select
-                      margin="normal"
-                      value={education}
-                      id="educationForm"
-                      label="Select Education Stage"
-                      variant="outlined"
-                      onChange={handleChange}
-                      helperText="Made in which Stage"
-                      InputLabelProps={{ required: true, shrink: true }}
-                      SelectProps={{
-                        native: true,
-                      }}
-                    >
-                      {educations.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.value}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      id="subCategory"
-                      label="SubCategory"
-                      variant="outlined"
-                      helperText="Example: Cat "
-                      required
-                      margin="normal"
-                    />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      id="age"
-                      type="number"
-                      label="Age"
-                      variant="outlined"
-                      required
-                      margin="normal"
-                      InputProps={{
-                        inputProps: {
-                          min: 1,
-                        },
-                      }}
-                    />
-                  </Grid>
+
+      <Box ml={1} mr={1} pt={10}>
+        <Paper className={classes.paper}>
+          <form className={classes.rootForm} onSubmit={handleSubmition}>
+            <Grid
+              container
+              spacing={3}
+              direction="row"
+              justify="space-around"
+              alignItems="stretch"
+            >
+              <Grid item xs={6}>
+                <Grid item>
+                  <TextField
+                    className={classes.size}
+                    select
+                    margin="normal"
+                    id="artist"
+                    label=" Select Artist"
+                    variant="outlined"
+                    helperText="Who made it"
+                    InputLabelProps={{ required: true, shrink: true }}
+                    SelectProps={{
+                      native: true,
+                    }}
+                  >
+                    {artists.map((option) => (
+                      <option key={option.id} value={option.id}>
+                        {option.Name}
+                      </option>
+                    ))}
+                  </TextField>
                 </Grid>
-                <Grid item xs={6}>
-                  <Card>
-                    <CardMedia component="img" image={imagePreview} />
-                    <CardActions>
-                      <input
-                        accept="image/*"
-                        className={classes.input}
-                        id="icon-button-file"
-                        type="file"
-                        onChange={handlePreview}
-                      />
-                      <label htmlFor="icon-button-file">
-                        <IconButton
-                          color="primary"
-                          aria-label="upload picture"
-                          component="span"
-                        >
-                          <AddPhotoAlternateIcon />
-                        </IconButton>
-                      </label>
-                    </CardActions>
-                  </Card>
-                  <Grid item>
-                    <Box pt={5}>
-                      <Fab color="primary" type="submit">
-                        <DoneIcon />
-                      </Fab>
-                    </Box>
-                  </Grid>
+                <Grid item>
+                  <TextField
+                    select
+                    margin="normal"
+                    id="educationForm"
+                    label="Select Education Stage"
+                    variant="outlined"
+                    helperText="Made in which Stage"
+                    InputLabelProps={{ required: true, shrink: true }}
+                    SelectProps={{
+                      native: true,
+                    }}
+                  >
+                    {educations.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.value}
+                      </option>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid item>
+                  <TextField
+                    id="subCategory"
+                    label="SubCategory"
+                    variant="outlined"
+                    helperText="Example: Cat "
+                    required
+                    margin="normal"
+                  />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    id="age"
+                    type="number"
+                    label="Age"
+                    variant="outlined"
+                    required
+                    margin="normal"
+                    InputProps={{
+                      inputProps: {
+                        min: 1,
+                      },
+                    }}
+                  />
                 </Grid>
               </Grid>
-            </form>
-          </Paper>
-        </Box>
-      </Container>
+              <Grid item xs={6}>
+                <Card>
+                  <CardMedia component="img" image={imagePreview} />
+                  <CardActions>
+                    <input
+                      accept="image/*"
+                      className={classes.input}
+                      id="icon-button-file"
+                      type="file"
+                      onChange={handlePreview}
+                    />
+                    <label htmlFor="icon-button-file">
+                      <IconButton
+                        color="primary"
+                        aria-label="upload picture"
+                        component="span"
+                      >
+                        <AddPhotoAlternateIcon />
+                      </IconButton>
+                    </label>
+                  </CardActions>
+                </Card>
+                <Grid item>
+                  <Box pt={5}>
+                    <Fab color="primary" type="submit">
+                      <DoneIcon />
+                    </Fab>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Grid>
+          </form>
+        </Paper>
+      </Box>
     </div>
   );
 };

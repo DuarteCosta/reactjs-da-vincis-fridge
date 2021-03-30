@@ -18,9 +18,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-around",
     overflow: "hidden",
   },
-  gridList: {
-    transform: "translateZ(0)",
-  },
+  gridList: {},
   art: {},
 }));
 
@@ -29,6 +27,7 @@ const Home = () => {
   const classes = useStyles();
   const [photos, setPhotos] = useState([]);
   const [fullPhoto, setFullPhoto] = useState(null);
+  const [gallery, setgallery] = useState(true);
 
   useEffect(() => {
     const fb = fbase.firestore();
@@ -49,32 +48,42 @@ const Home = () => {
 
   return (
     <div>
-      <TopBar></TopBar>
-      <Box m={{ xs: 3, sm: 3, md: 6, lg: 10, xl: 10 }} className={classes.root}>
-        <GridList
-          spacing={30}
-          cellHeight={500}
-          cols={1}
-          className={classes.gridList}
-        >
-          {photos.map((art) => (
-            <GridListTile key={art.id}>
-              <img
-                src={art.Url}
-                alt=""
-                className={classes.art}
-                onClick={() => setFullPhoto(art)}
-              />
-            </GridListTile>
-          ))}
-        </GridList>
-      </Box>
-      <NavBar></NavBar>
-      {fullPhoto ? (
+      {gallery ? (
         <div>
-          <Modal Close={setFullPhoto} selected={fullPhoto} />
+          <TopBar></TopBar>
+          <Box
+            m={{ xs: 3, sm: 3, md: 6, lg: 10, xl: 10 }}
+            className={classes.root}
+          >
+            <GridList
+              spacing={30}
+              cellHeight={500}
+              cols={1}
+              className={classes.gridList}
+            >
+              {photos.map((art) => (
+                <GridListTile key={art.id}>
+                  <img
+                    src={art.Url}
+                    alt=""
+                    className={classes.art}
+                    onClick={() => setFullPhoto(art)}
+                  />
+                </GridListTile>
+              ))}
+            </GridList>
+          </Box>
+          <NavBar></NavBar>
         </div>
       ) : null}
+
+      {fullPhoto ? (
+        <div>
+          <Modal Close={setFullPhoto} selected={fullPhoto} CloseGallery={setgallery} />
+        </div>
+      ) : null}
+
+     
     </div>
   );
 };

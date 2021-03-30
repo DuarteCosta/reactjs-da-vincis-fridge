@@ -7,7 +7,7 @@ import Search from "./pages/Search";
 import Upload from "./pages/Upload";
 import Upload2D from "./pages/Upload2D";
 import Upload3D from "./pages/Upload3D";
-import Ar from "./pages/Ar";
+import Ar from "./components/Ar";
 import CreateArtist from "./pages/CreateArtist";
 import { AuthProvider } from "./services/Auth";
 import PrivateRoute from "./services/PrivateRoute";

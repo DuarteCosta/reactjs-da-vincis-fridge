@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useDebugValue } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import fbase from "../services/FBase";
 import { withRouter } from "react-router";
 import {
@@ -8,10 +8,10 @@ import {
   Drawer,
   List,
   ListItemText,
-  ListItem,
   Divider,
 } from "@material-ui/core";
 import { AuthContext } from "../services/Auth";
+import Ar from "../components/Ar";
 //import clsx from "clsx";
 const useStyles = makeStyles({
   view: {
@@ -32,15 +32,15 @@ const useStyles = makeStyles({
   },
 });
 
-const Modal = ({ history, selected, Close }) => {
+const Modal = ({ history, selected, Close, CloseGallery }) => {
   const { currentUser } = useContext(AuthContext);
   const classes = useStyles();
   const [metaData, setMetaData] = useState({});
-  //const [type, setType] = useState([]);
   const [state, setState] = React.useState({
     bottom: false,
   });
-
+  const [ar, setAr] = useState(null);
+  const [modal, setmodal] = useState(true);
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -54,6 +54,20 @@ const Modal = ({ history, selected, Close }) => {
   const handleClose = () => {
     Close(null);
   };
+
+  const handleAr = () => {
+    CloseGallery(null);
+    setmodal(null);
+    setAr(true);
+  };
+
+  const handleArExit = () => {
+    // CloseGallery(true);
+    //setmodal(true);
+    //setAr(null);
+    window.location.reload();
+  };
+
   useEffect(() => {
     let data = {};
     const storageRef = fbase.storage().refFromURL(selected.Url);
@@ -68,31 +82,38 @@ const Modal = ({ history, selected, Close }) => {
 
   return (
     <div>
-      <Box maxWidth="lg" className={classes.view}>
-        <Button>AR</Button>
-        <React.Fragment>
-          <Button onClick={toggleDrawer("bottom", true)}>Info</Button>
-          <Drawer
-            anchor={"bottom"}
-            open={state["bottom"]}
-            onClose={toggleDrawer("bottom", false)}
-          >
-            <List>
-              {Object.entries(metaData).map(([key, value]) => (
-                <>
-                  <ListItemText key={key} primary={key + ": " + value} />
-                  <Divider  key={key+"1"}/>
-                </>
-              ))}
-            </List>
-          </Drawer>
-        </React.Fragment>
-        <Button onClick={() => handleClose()}>close</Button>
+      {modal ? (
+        <div>
+          <Box maxWidth="lg" className={classes.view}>
+            <Button onClick={() => handleAr()}>AR</Button>
+            <React.Fragment>
+              <Button onClick={toggleDrawer("bottom", true)}>Info</Button>
+              <Drawer
+                anchor={"bottom"}
+                open={state["bottom"]}
+                onClose={toggleDrawer("bottom", false)}
+              >
+                <List>
+                  {Object.entries(metaData).map(([key, value]) => (
+                    <>
+                      <ListItemText key={key} primary={key + ": " + value} />
+                      <Divider key={key + "1"} />
+                    </>
+                  ))}
+                </List>
+              </Drawer>
+            </React.Fragment>
+            <Button onClick={() => handleClose()}>Close</Button>
+            <img className={classes.image} src={selected.Url} alt="big pic" />
+          </Box>
+        </div>
+      ) : null}
 
-        <img className={classes.image} src={selected.Url} alt="big pic" />
-
-        {/* <Button  ref={imageRef}  onClick={() => history.push("/Ar", { state: "sample data" })}> */}
-      </Box>
+      {ar ? (
+        <div>
+          <Ar Art={selected.Url} Type={metaData.type} Return={handleArExit} />
+        </div>
+      ) : null}
     </div>
   );
 };
