@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import TopBarBack from "../components/TopBarBack";
 import { withRouter } from "react-router";
 import fbase from "../services/FBase";
+import fbase1 from "../services/FBase";
 import fridge3 from "../assets/img/FRIDGE3.jpg";
 import { AuthContext } from "../services/Auth";
 import {
@@ -14,6 +15,7 @@ import {
   Fab,
   IconButton,
   CardMedia,
+  LinearProgress,
   Card,
   CardActions,
 } from "@material-ui/core";
@@ -90,8 +92,9 @@ const Upload3D = ({ history }) => {
   const [img5, setImg5] = useState(fridge3);
   const [a, setA] = useState(0);
   const [shape, setShape] = useState("Cube");
-  const [files, setFiles] = useState({});
-  const [id, setId] = useState();
+  const [files, setFiles] = useState([]);
+  let [bar, setBar] = useState(null);
+
   const handleShape = (event) => {
     setShape(event.target.value);
     reset();
@@ -115,9 +118,9 @@ const Upload3D = ({ history }) => {
       }
     });
     reader.readAsDataURL(event.target.files[0]);
-    setFiles((state) => ({
-      ...state,
-      [a]: event.target.files[0],
+
+    setFiles((previousState) => ({
+      myArray: [...(previousState.myArray || []), event.target.files[0]],
     }));
   };
 
@@ -132,8 +135,13 @@ const Upload3D = ({ history }) => {
   };
 
   const handleSubmition = async (event) => {
-    event.preventDefault();
-
+    setBar(
+      <>
+        <LinearProgress />
+      </>
+    );
+    let i = 0;
+    let id = null;
     event.preventDefault();
     const { artist, educationForm, subCategory, age } = event.target.elements;
     const metadata = {
@@ -145,50 +153,95 @@ const Upload3D = ({ history }) => {
         type: shape.value,
       },
     };
+    //console.log(s["myArray"]);
 
-    Object.entries(files).forEach(([key, value]) => {
-      if (key === 0) {
+    for (const c of files["myArray"]) {
+      if (i === 0) {
+        i = 1;
         const storageRef = fbase
           .storage()
           .ref("Users/" + currentUser.uid + "/Pictures");
-        const fileRef = storageRef.child(value.name);
-        fileRef.put(value, metadata);
+        const fileRef = storageRef.child(c.name);
+        await fileRef.put(c, metadata);
 
-        const url = fileRef.getDownloadURL();
-        fbase
+        const url = await fileRef.getDownloadURL();
+        id = await fbase
           .firestore()
           .collection("Users")
           .doc(currentUser.uid)
           .collection("Pictures")
           .add({
             Url: url,
-          })
-          .then((docRef) => {
-            setId(docRef.id);
           });
       } else {
-        const storageRef = fbase
+        const storageRef1 = fbase1
           .storage()
           .ref("Users/" + currentUser.uid + "/Pictures");
-        const fileRef = storageRef.child(value.name);
-        fileRef.put(value, metadata);
+        const fileRef1 = storageRef1.child(c.name);
+        await fileRef1.put(c, metadata);
 
-        const url = fileRef.getDownloadURL();
-        console.log(id);
-        fbase
+        const url1 = await fileRef1.getDownloadURL();
+
+        await fbase1
           .firestore()
           .collection("Users")
           .doc(currentUser.uid)
           .collection("Pictures")
-          .doc(id)
-          .add({
-            key: url,
-          });
+          .doc(id.id)
+          .set(
+            {
+              [i]: url1,
+            },
+            { merge: true }
+          );
+        i = i + 1;
       }
-    });
-
+    }
     history.push("/");
+    //hh
   };
+  // Object.entries(files).forEach(([key, value]) => {
+  //   if (key === 0) {
+  //     const storageRef = fbase
+  //       .storage()
+  //       .ref("Users/" + currentUser.uid + "/Pictures");
+  //     const fileRef = storageRef.child(value.name);
+  //     fileRef.put(value, metadata);
+
+  //     const url = fileRef.getDownloadURL();
+  //     fbase
+  //       .firestore()
+  //       .collection("Users")
+  //       .doc(currentUser.uid)
+  //       .collection("Pictures")
+  //       .add({
+  //         Url: url,
+  //       })
+  //       .then((docRef) => {
+  //         setId(docRef.id);
+  //       });
+  //   } else {
+  //     const storageRef = fbase
+  //       .storage()
+  //       .ref("Users/" + currentUser.uid + "/Pictures");
+  //     const fileRef = storageRef.child(value.name);
+  //     fileRef.put(value, metadata);
+
+  //     const url = fileRef.getDownloadURL();
+  //     console.log(id);
+  //     fbase
+  //       .firestore()
+  //       .collection("Users")
+  //       .doc(currentUser.uid)
+  //       .collection("Pictures")
+  //       .doc(id)
+  //       .add({
+  //         Url: url,
+  //       });
+  //   }
+  // });
+
+  // history.push("/");
 
   let frames = null;
   if (shape === "Cube") {
@@ -544,6 +597,7 @@ const Upload3D = ({ history }) => {
 
   return (
     <div>
+      {bar}
       <TopBarBack></TopBarBack>
 
       <Box ml={1} mr={1} pt={10}>

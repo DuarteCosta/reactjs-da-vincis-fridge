@@ -13,6 +13,7 @@ import {
   Fab,
   IconButton,
   CardMedia,
+  LinearProgress,
   Card,
   CardActions,
 } from "@material-ui/core";
@@ -73,6 +74,7 @@ const Upload2D = ({ history }) => {
   const [imagePreview, setImagePreview] = useState(fridge3);
 
   const [file, setFile] = useState(null);
+  let [bar, setBar] = useState(null);
 
   const handlePreview = (event) => {
     const reader = new FileReader();
@@ -84,6 +86,11 @@ const Upload2D = ({ history }) => {
   };
 
   const handleSubmition = async (event) => {
+    setBar(
+      <>
+        <LinearProgress />
+      </>
+    );
     event.preventDefault();
     const { artist, educationForm, subCategory, age } = event.target.elements;
     const metadata = {
@@ -134,6 +141,7 @@ const Upload2D = ({ history }) => {
 
   return (
     <div>
+      {bar}
       <TopBarBack></TopBarBack>
 
       <Box ml={1} mr={1} pt={10}>
