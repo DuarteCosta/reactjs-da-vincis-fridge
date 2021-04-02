@@ -32,10 +32,11 @@ const useStyles = makeStyles({
   },
 });
 
-const Modal = ({ history, selected, Close, CloseGallery }) => {
+const Modal = ({ selected, Close, CloseGallery }) => {
   const { currentUser } = useContext(AuthContext);
   const classes = useStyles();
   const [metaData, setMetaData] = useState({});
+  const [parts, setParts] = useState([]);
   const [state, setState] = React.useState({
     bottom: false,
   });
@@ -70,6 +71,8 @@ const Modal = ({ history, selected, Close, CloseGallery }) => {
 
   useEffect(() => {
     let data = {};
+    let array = [];
+    let unsubscribe = null;
     const storageRef = fbase.storage().refFromURL(selected.Url);
     storageRef.getMetadata().then((metadata) => {
       for (var key in metadata.customMetadata) {
@@ -78,6 +81,23 @@ const Modal = ({ history, selected, Close, CloseGallery }) => {
       }
       setMetaData(data);
     });
+    console.log(555);
+    if (data.type !== "2D" && data.type !== "Sphere") {
+      const fb = fbase.firestore();
+      unsubscribe = fb
+        .collection("Users")
+        .doc(currentUser.uid)
+        .collection("Pictures")
+        .doc(selected.id)
+        .get()
+        .then((doc) => {
+          for (const [key, value] of Object.entries(doc.data())) {
+            array.push(value);
+          }
+          setParts(array);
+        });
+    }
+    return unsubscribe;
   }, [currentUser.uid, selected]);
 
   return (
@@ -111,7 +131,12 @@ const Modal = ({ history, selected, Close, CloseGallery }) => {
 
       {ar ? (
         <div>
-          <Ar Art={selected.Url} Type={metaData.type} Return={handleArExit} />
+          <Ar
+            Art3D={parts}
+            Art={selected.Url}
+            Type={metaData.type}
+            Return={handleArExit}
+          />
         </div>
       ) : null}
     </div>

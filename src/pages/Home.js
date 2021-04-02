@@ -79,11 +79,13 @@ const Home = () => {
 
       {fullPhoto ? (
         <div>
-          <Modal Close={setFullPhoto} selected={fullPhoto} CloseGallery={setgallery} />
+          <Modal
+            Close={setFullPhoto}
+            selected={fullPhoto}
+            CloseGallery={setgallery}
+          />
         </div>
       ) : null}
-
-     
     </div>
   );
 };
