@@ -81,7 +81,7 @@ const Search = () => {
   const [allPhotos, setAllPhotos] = useState([]);
   useEffect(() => {
     const fb1 = fbase.firestore();
-    const unsubscribe1 = fb1
+     fb1
       .collection("Users")
       .doc(currentUser.uid)
       .collection("Pictures")
@@ -117,11 +117,11 @@ const Search = () => {
       </>
     );
 
-    for (var i = 0; i < allPhotos.length; i++) {
+    for (let i = 0; i < allPhotos.length; i++) {
       const storageRef = fbase.storage().refFromURL(allPhotos[i]);
       await storageRef.getMetadata().then((metadata) => {
-        var a = true;
-        for (var key in metadata.customMetadata) {
+        let a = true;
+        for (let key in metadata.customMetadata) {
           var value = metadata.customMetadata[key];
           if (key === "subCategory") {
             if (value !== subCategory.value) {
@@ -154,6 +154,7 @@ const Search = () => {
     await setPhotos(b);
     setSearch(false);
     setgallery2(true);
+    console.log("Read");
   };
   const handleExit = () => {
     setSearch(true);
