@@ -41,7 +41,10 @@ const Home = () => {
 
         snapshot.forEach((doc) => art.push({ ...doc.data(), id: doc.id }));
         setPhotos(art);
+        console.log(art)
       });
+     
+
 
     return unsubscribe;
   }, [currentUser.uid]);

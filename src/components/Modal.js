@@ -37,6 +37,7 @@ const Modal = ({ selected, Close, CloseGallery }) => {
   const classes = useStyles();
   const [metaData, setMetaData] = useState({});
   const [parts, setParts] = useState([]);
+  let [bar, setBar] = useState(null);
   const [state, setState] = React.useState({
     bottom: false,
   });
