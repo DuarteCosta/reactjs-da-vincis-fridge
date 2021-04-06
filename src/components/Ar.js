@@ -74,7 +74,6 @@ const Ar = ({ Art3D, Art, Type, Return, history }) => {
       </>
     );
   } else if (Type === "Cylinder") {
-    console.log(Art3D);
     geo = (
       <>
         <a-cylinder cylinde={"photos:" + Art3D} height="3">

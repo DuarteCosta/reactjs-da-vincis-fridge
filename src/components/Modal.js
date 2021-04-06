@@ -91,11 +91,9 @@ const Modal = ({ selected, Close, CloseGallery }) => {
         .doc(selected.id)
         .get()
         .then((doc) => {
-          for (const value of Object.entries(doc.data())) {
+          for (const [key, value] of Object.entries(doc.data())) {
             array.push(value);
-           
           }
-          console.log(array);
           setParts(array);
         });
     }
