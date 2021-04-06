@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   bar: {},
 }));
 
-const Ar = ({ Art3D, Art, Type, Return }) => {
+const Ar = ({ Art3D, Art, Type, Return, history }) => {
   const classes = useStyles();
   let geo = null;
   if (Type === "2D") {

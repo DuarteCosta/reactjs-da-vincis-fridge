@@ -37,7 +37,6 @@ const Modal = ({ selected, Close, CloseGallery }) => {
   const classes = useStyles();
   const [metaData, setMetaData] = useState({});
   const [parts, setParts] = useState([]);
-  let [bar, setBar] = useState(null);
   const [state, setState] = React.useState({
     bottom: false,
   });
@@ -92,7 +91,7 @@ const Modal = ({ selected, Close, CloseGallery }) => {
         .doc(selected.id)
         .get()
         .then((doc) => {
-          for (const [key, value] of Object.entries(doc.data())) {
+          for (const value of Object.entries(doc.data())) {
             array.push(value);
           }
           setParts(array);

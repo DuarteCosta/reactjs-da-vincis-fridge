@@ -21,6 +21,7 @@ import {
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import SearchIcon from "@material-ui/icons/Search";
 const educations = [
+  { value: "All" },
   { value: "Before Pre Kindergarten" },
   { value: "Pre Kindergarten" },
   { value: "Kindergraten" },
@@ -81,7 +82,7 @@ const Search = () => {
   const [allPhotos, setAllPhotos] = useState([]);
   useEffect(() => {
     const fb1 = fbase.firestore();
-     fb1
+    fb1
       .collection("Users")
       .doc(currentUser.uid)
       .collection("Pictures")
@@ -102,7 +103,6 @@ const Search = () => {
           artistsData.push({ ...docs.data(), id: docs.id })
         );
         setArtists(artistsData);
-        console.log("Read");
       });
     return unsubscribe;
   }, [currentUser.uid]);
@@ -123,23 +123,23 @@ const Search = () => {
         let a = true;
         for (let key in metadata.customMetadata) {
           var value = metadata.customMetadata[key];
-          if (key === "subCategory") {
+          if (key === "subCategory" && subCategory.value !== "") {
             if (value !== subCategory.value) {
               a = false;
             }
           }
 
-          if (key === "education") {
+          if (key === "education" && educationForm.value !== "All") {
             if (value !== educationForm.value) {
               a = false;
             }
           }
-          if (key === "artists") {
+          if (key === "artists" && artist.value !== "All") {
             if (value !== artist.value) {
               a = false;
             }
           }
-          if (key === "age") {
+          if (key === "age" && age.value !== "") {
             if (value !== age.value) {
               a = false;
             }
@@ -151,7 +151,7 @@ const Search = () => {
         }
       });
     }
-    await setPhotos(b);
+    setPhotos(b);
     setSearch(false);
     setgallery2(true);
     console.log("Read");
@@ -193,6 +193,7 @@ const Search = () => {
                           native: true,
                         }}
                       >
+                        <option>All</option>
                         {artists.map((option) => (
                           <option key={option.id} value={option.id}>
                             {option.Name}
@@ -226,7 +227,6 @@ const Search = () => {
                         label="SubCategory"
                         variant="outlined"
                         helperText="Example: Cat "
-                        required
                         margin="normal"
                       />
                     </Grid>
@@ -236,7 +236,6 @@ const Search = () => {
                         type="number"
                         label="Age"
                         variant="outlined"
-                        required
                         margin="normal"
                         InputProps={{
                           inputProps: {
