@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router";
-//import { Link } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -14,7 +13,6 @@ import {
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import ViewArrayIcon from "@material-ui/icons/ViewArray";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
@@ -58,9 +56,6 @@ const TopBar = ({ history }) => {
         <Typography className={classes.title}>Da Vinci's Fridge</Typography>
         <IconButton onClick={handleUpload}>
           <CloudUploadIcon></CloudUploadIcon>
-        </IconButton>
-        <IconButton>
-          <ViewArrayIcon></ViewArrayIcon>
         </IconButton>
         <div>
           <IconButton

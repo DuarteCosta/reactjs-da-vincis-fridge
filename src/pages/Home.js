@@ -2,7 +2,7 @@
 import NavBar from "../components/NavBar";
 import TopBar from "../components/TopBar";
 import Modal from "../components/Modal";
-import { Box, GridListTile, makeStyles, GridList } from "@material-ui/core";
+import { Box, GridListTile, makeStyles, GridList, useMediaQuery ,useTheme  } from "@material-ui/core";
 import React, { useState, useEffect, useContext } from "react";
 //import { withRouter } from "react-router";
 import fbase from "../services/FBase";
@@ -20,14 +20,19 @@ const useStyles = makeStyles((theme) => ({
   },
   gridList: {},
   art: {},
+  
 }));
 
 const Home = () => {
   const { currentUser } = useContext(AuthContext);
   const classes = useStyles();
+  const theme = useTheme();
   const [photos, setPhotos] = useState([]);
   const [fullPhoto, setFullPhoto] = useState(null);
   const [gallery, setgallery] = useState(true);
+  const desktop = useMediaQuery(theme.breakpoints.up("lg"));
+  const tablet = useMediaQuery(theme.breakpoints.up("sm"));
+  const mobile = useMediaQuery(theme.breakpoints.up("xs"));
 
   useEffect(() => {
     const fb = fbase.firestore();
@@ -49,6 +54,12 @@ const Home = () => {
     return unsubscribe;
   }, [currentUser.uid]);
 
+  const cellH = () => {
+    if (desktop) return 800;
+    if (tablet) return 500;
+    if (mobile) return 210;
+  };
+
   return (
     <div>
       {gallery ? (
@@ -60,7 +71,7 @@ const Home = () => {
           >
             <GridList
               spacing={30}
-              cellHeight={500}
+              cellHeight={cellH()}
               cols={1}
               className={classes.gridList}
             >

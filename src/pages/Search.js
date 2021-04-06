@@ -17,6 +17,8 @@ import {
   GridListTile,
   GridList,
   LinearProgress,
+  useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import SearchIcon from "@material-ui/icons/Search";
@@ -80,6 +82,11 @@ const Search = () => {
   const [gallery2, setgallery2] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const [allPhotos, setAllPhotos] = useState([]);
+  const theme = useTheme();
+  const tablet = useMediaQuery(theme.breakpoints.up("sm"));
+  const desktop = useMediaQuery(theme.breakpoints.up("lg"));
+  const mobile = useMediaQuery(theme.breakpoints.up("xs"));
+
   useEffect(() => {
     const fb1 = fbase.firestore();
     fb1
@@ -161,7 +168,11 @@ const Search = () => {
     setgallery2(false);
     setBar(false);
   };
-
+  const cellH = () => {
+    if (desktop) return 400;
+    if (tablet) return 300;
+    if (mobile) return 100;
+  };
   return (
     <div>
       {search ? (
@@ -258,21 +269,20 @@ const Search = () => {
       ) : null}
       {gallery2 ? (
         <div>
-          <AppBar position="fixed">
-            <Toolbar>
-              <IconButton onClick={() => handleExit()}>
-                <ArrowBackIcon></ArrowBackIcon>
-              </IconButton>
-            </Toolbar>
-          </AppBar>
-          <Box
-            m={{ xs: 3, sm: 3, md: 6, lg: 10, xl: 10 }}
-            className={classes.root2}
-          >
+          <div>
+            <AppBar position="static">
+              <Toolbar>
+                <IconButton onClick={() => handleExit()}>
+                  <ArrowBackIcon></ArrowBackIcon>
+                </IconButton>
+              </Toolbar>
+            </AppBar>
+          </div>
+          <Box m={{ xs: 3, sm: 3, md: 6, lg: 10, xl: 10 }}>
             <GridList
               spacing={30}
-              cellHeight={500}
-              cols={1}
+              cellHeight={cellH()}
+              cols={2}
               className={classes.gridList}
             >
               {photos.map((art) => (
