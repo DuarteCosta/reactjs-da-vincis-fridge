@@ -58,15 +58,15 @@
 }); */
 
 
-AFRAME.registerComponent("cube", {
+    AFRAME.registerComponent("cube", {
 
-  schema: {
-    photos: {default: ["https://threejsfundamentals.org/threejs/resources/images/flower-1.jpg","https://threejsfundamentals.org/threejs/resources/images/flower-2.jpg",
-    "https://threejsfundamentals.org/threejs/resources/images/flower-3.jpg","https://threejsfundamentals.org/threejs/resources/images/flower-4.jpg","https://threejsfundamentals.org/threejs/resources/images/flower-5.jpg",
-    "https://threejsfundamentals.org/threejs/resources/images/flower-6.jpg"]},
+      schema: {
+           photos: {default: ["https://threejsfundamentals.org/threejs/resources/images/flower-1.jpg","https://threejsfundamentals.org/threejs/resources/images/flower-2.jpg",
+           "https://threejsfundamentals.org/threejs/resources/images/flower-3.jpg","https://threejsfundamentals.org/threejs/resources/images/flower-4.jpg","https://threejsfundamentals.org/threejs/resources/images/flower-5.jpg",
+          "https://threejsfundamentals.org/threejs/resources/images/flower-6.jpg"]},
 
   
-  },
+      },
 
         init: function() {
 
@@ -92,20 +92,46 @@ AFRAME.registerComponent("cube", {
 
       AFRAME.registerComponent("cylinde", {
 
-schema: {
-  photos: {default: ["https://threejsfundamentals.org/threejs/resources/images/flower-1.jpg","https://threejsfundamentals.org/threejs/resources/images/flower-2.jpg",
-  "https://threejsfundamentals.org/threejs/resources/images/flower-3.jpg"]},
-
-
+    schema: {
+    photos: {default: ["https://threejsfundamentals.org/threejs/resources/images/flower-1.jpg","https://threejsfundamentals.org/threejs/resources/images/flower-2.jpg",
+    "https://threejsfundamentals.org/threejs/resources/images/flower-3.jpg",
+  ]},
 },
 
       init: function() {
+
             //Multiple Color
             const loader = new THREE.TextureLoader();
             var materials = [
             new THREE.MeshBasicMaterial({map: loader.load(this.data.photos[0])}), //curved
             new THREE.MeshBasicMaterial({map: loader.load(this.data.photos[2])}), // top
             new THREE.MeshBasicMaterial({map: loader.load(this.data.photos[1])}), // bottom
+       ]
+          
+  
+            this.el.getObject3D('mesh').material = materials;
+           
+
+        }
+      });
+
+
+      AFRAME.registerComponent("con", {
+
+        schema: {
+        photos: {default: ["https://threejsfundamentals.org/threejs/resources/images/flower-1.jpg","https://threejsfundamentals.org/threejs/resources/images/flower-2.jpg"]},
+
+
+        },
+
+      init: function() {
+
+            //Multiple Color
+            const loader = new THREE.TextureLoader();
+            var materials = [
+            new THREE.MeshBasicMaterial({map: loader.load(this.data.photos[1])}), //curved
+            new THREE.MeshBasicMaterial({map: loader.load("")}), 
+            new THREE.MeshBasicMaterial({map: loader.load(this.data.photos[0])}) 
        ]
           
   

@@ -61,7 +61,7 @@ const Ar = ({ Art3D, Art, Type, Return, history }) => {
   } else if (Type === "Cone") {
     geo = (
       <>
-        <a-cone src={Art} height="3">
+        <a-cone con={"photos:" + Art3D} height="3">
           <a-animation
             attribute="rotation"
             dur="10000"
@@ -76,6 +76,7 @@ const Ar = ({ Art3D, Art, Type, Return, history }) => {
   } else if (Type === "Cylinder") {
     geo = (
       <>
+    
         <a-cylinder cylinde={"photos:" + Art3D} height="3">
           <a-animation
             attribute="rotation"

@@ -412,7 +412,7 @@ const Upload3D = ({ history }) => {
           <CardMedia className={classes.pic} component="img" image={img0} />
 
           <CardActions>
-            <Typography>Top Face</Typography>
+            <Typography>Top Base</Typography>
             <input
               accept="image/*"
               className={classes.input}
@@ -541,6 +541,32 @@ const Upload3D = ({ history }) => {
                 component="span"
                 onClick={() => {
                   setA(0);
+                }}
+              >
+                <AddPhotoAlternateIcon />
+              </IconButton>
+            </label>
+          </CardActions>
+        </Card>
+        <Card className={classes.cardSize}>
+          <CardMedia className={classes.pic} component="img" image={img1} />
+
+          <CardActions>
+            <Typography>Base Face</Typography>
+            <input
+              accept="image/*"
+              className={classes.input}
+              id="icon-button-file"
+              type="file"
+              onChange={handlePreview}
+            />
+            <label htmlFor="icon-button-file">
+              <IconButton
+                color="primary"
+                aria-label="upload picture"
+                component="span"
+                onClick={() => {
+                  setA(1);
                 }}
               >
                 <AddPhotoAlternateIcon />
