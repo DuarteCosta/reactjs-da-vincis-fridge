@@ -4,15 +4,18 @@ import { withRouter } from "react-router";
 import {
   makeStyles,
   Box,
-  Button,
   Drawer,
   List,
   ListItemText,
   Divider,
+  IconButton,
 } from "@material-ui/core";
 import { AuthContext } from "../services/Auth";
 import Ar from "../components/Ar";
-//import clsx from "clsx";
+import InfoIcon from "@material-ui/icons/Info";
+import ClearIcon from "@material-ui/icons/Clear";
+import arIcon from "../assets/img/arIcon.svg";
+
 const useStyles = makeStyles({
   view: {
     top: "0",
@@ -29,6 +32,9 @@ const useStyles = makeStyles({
     marginLeft: "auto",
     marginRight: "auto",
     objectFit: "contain",
+  },
+  tools: {
+    textAlign: "end",
   },
 });
 
@@ -104,26 +110,42 @@ const Modal = ({ selected, Close, CloseGallery }) => {
     <div>
       {modal ? (
         <div>
-          <Box maxWidth="lg" className={classes.view}>
-            <Button onClick={() => handleAr()}>AR</Button>
-            <React.Fragment>
-              <Button onClick={toggleDrawer("bottom", true)}>Info</Button>
-              <Drawer
-                anchor={"bottom"}
-                open={state["bottom"]}
-                onClose={toggleDrawer("bottom", false)}
+          <Box className={classes.view}>
+            <div className={classes.tools}>
+              <IconButton onClick={() => handleAr()}>
+                <img src={arIcon} alt="" />
+              </IconButton>
+              <React.Fragment>
+                <IconButton
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={toggleDrawer("bottom", true)}
+                >
+                  <InfoIcon color="primary"> </InfoIcon>
+                </IconButton>
+                <Drawer
+                  anchor={"bottom"}
+                  open={state["bottom"]}
+                  onClose={toggleDrawer("bottom", false)}
+                >
+                  <List>
+                    {Object.entries(metaData).map(([key, value]) => (
+                      <>
+                        <ListItemText key={key} primary={key + ": " + value} />
+                        <Divider key={key + "1"} />
+                      </>
+                    ))}
+                  </List>
+                </Drawer>
+              </React.Fragment>
+              <IconButton
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={() => handleClose()}
               >
-                <List>
-                  {Object.entries(metaData).map(([key, value]) => (
-                    <>
-                      <ListItemText key={key} primary={key + ": " + value} />
-                      <Divider key={key + "1"} />
-                    </>
-                  ))}
-                </List>
-              </Drawer>
-            </React.Fragment>
-            <Button onClick={() => handleClose()}>Close</Button>
+                <ClearIcon color="primary"> </ClearIcon>
+              </IconButton>
+            </div>
             <img className={classes.image} src={selected.Url} alt="big pic" />
           </Box>
         </div>

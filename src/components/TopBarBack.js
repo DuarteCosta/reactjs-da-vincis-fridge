@@ -13,7 +13,7 @@ const TopBarBack = ({ history }) => {
     <AppBar position="static">
       <Toolbar>
         <IconButton onClick={handleBack}>
-          <ArrowBackIcon></ArrowBackIcon>
+          <ArrowBackIcon color="secondary"></ArrowBackIcon>
         </IconButton>
       </Toolbar>
     </AppBar>

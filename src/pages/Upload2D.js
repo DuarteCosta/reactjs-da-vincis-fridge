@@ -95,11 +95,11 @@ const Upload2D = ({ history }) => {
     const { artist, educationForm, subCategory, age } = event.target.elements;
     const metadata = {
       customMetadata: {
-        artists: artist.value,
-        education: educationForm.value,
-        subCategory: subCategory.value,
-        age: age.value,
-        type: "2D",
+        Artist: artist.value,
+        Age: age.value,
+        Education: educationForm.value,
+        SubCategory: subCategory.value,
+        Type: "2D",
       },
     };
     const storageRef = fbase

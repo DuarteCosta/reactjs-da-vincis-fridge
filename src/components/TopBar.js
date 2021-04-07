@@ -54,7 +54,7 @@ const TopBar = ({ history }) => {
     <AppBar position="static">
       <Toolbar>
         <Typography className={classes.title}>Da Vinci's Fridge</Typography>
-        <IconButton onClick={handleUpload}>
+        <IconButton color="secondary" onClick={handleUpload}>
           <CloudUploadIcon></CloudUploadIcon>
         </IconButton>
         <div>
@@ -63,7 +63,7 @@ const TopBar = ({ history }) => {
             aria-haspopup="true"
             onClick={handleClick}
           >
-            <AccountCircle></AccountCircle>
+            <AccountCircle color="secondary"></AccountCircle>
           </IconButton>
           <Menu
             anchorEl={anchorEl}
@@ -71,7 +71,6 @@ const TopBar = ({ history }) => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <Divider />
             <MenuItem>
               <ListItemIcon>
                 <EditIcon />

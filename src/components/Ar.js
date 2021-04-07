@@ -102,7 +102,7 @@ const Ar = ({ Art3D, Art, Type, Return, history }) => {
       <AppBar className={classes.bar} position="fixed">
         <Toolbar>
           <IconButton onClick={() => Return()}>
-            <ArrowBackIcon></ArrowBackIcon>
+            <ArrowBackIcon color="secondary"></ArrowBackIcon>
           </IconButton>
         </Toolbar>
       </AppBar>

@@ -273,7 +273,7 @@ const Search = () => {
             <AppBar position="static">
               <Toolbar>
                 <IconButton onClick={() => handleExit()}>
-                  <ArrowBackIcon></ArrowBackIcon>
+                  <ArrowBackIcon color="secondary"></ArrowBackIcon>
                 </IconButton>
               </Toolbar>
             </AppBar>

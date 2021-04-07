@@ -20,9 +20,9 @@ const theme = createMuiTheme({
       main: "#9575cd",
     },
     secondary: {
-      main: "#EF9A9A ",
+      main: "#f8f8f8 ",
     },
-    // background: { paper: "#9575cd" },
+   background: { default: "#f8f8f8" },
   },
 
   typography: {
