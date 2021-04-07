@@ -3,6 +3,14 @@
   "name": "Da Vincis Fridge",
   "icons": [
    
+
+    {
+      "src": "favicon.ico",
+        "type": "image/x-icon",
+        "sizes": "64x64 32x32 24x24 16x6"
+      },
+
+
     {
     "src": "icon192.png",
       "type": "image/png",
@@ -16,7 +24,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/?source=pwa",
+  "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#9575cd"
