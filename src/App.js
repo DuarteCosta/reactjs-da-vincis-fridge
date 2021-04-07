@@ -13,34 +13,35 @@ import { AuthProvider } from "./services/Auth";
 import PrivateRoute from "./services/PrivateRoute";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: "#9575cd",
-    },
-    secondary: {
-      main: "#f8f8f8 ",
-    },
-   background: { default: "#f8f8f8" },
-  },
-
-  typography: {
-    fontFamily: "Segoe UI",
-
-    h2: {
-      color: "white",
-    },
-  },
-  props: {
-    MuiButton: {
-      color: "primary",
-      variant: "contained",
-    },
-  },
-});
+import { useMediaQuery } from "@material-ui/core";
 
 const App = () => {
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const theme = createMuiTheme({
+    palette: {
+      type: prefersDarkMode ? "dark" : "light",
+      primary: {
+        main: "#9575cd",
+      },
+      secondary: {
+        main: "#f8f8f8 ",
+      },
+    },
+
+    typography: {
+      fontFamily: "Segoe UI",
+
+      h2: {
+        color: "white",
+      },
+    },
+    props: {
+      MuiButton: {
+        color: "primary",
+        variant: "contained",
+      },
+    },
+  });
   return (
     //provides info of user through context
     //exatc use to not mix up

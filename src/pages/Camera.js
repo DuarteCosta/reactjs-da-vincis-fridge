@@ -9,15 +9,20 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
     justifyContent: "space-around",
     overflow: "hidden",
+    width: "100%",
   },
 }));
 
 const Camera = () => {
+  const classes = useStyles();
+  const videoConstraints = {
+    facingMode: { exact: "environment" },
+  };
   return (
     <div>
       <TopBarBack></TopBarBack>
-      <Box className="root">
-        <Webcam height={1000} width={1000}/>
+      <Box className={classes.root}>
+        <Webcam videoConstraints={videoConstraints} />
       </Box>
     </div>
   );
