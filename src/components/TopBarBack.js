@@ -1,4 +1,4 @@
-import React  from "react";
+import React from "react";
 import { withRouter } from "react-router";
 
 import { AppBar, Toolbar, IconButton } from "@material-ui/core";

@@ -18,7 +18,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import EditIcon from "@material-ui/icons/Edit";
 import fbase from "../services/FBase";
-
+import fridgeIcon from "../assets/img/favicon.ico";
 const useStyles = makeStyles({
   title: {
     textAlign: "Left",
@@ -53,6 +53,7 @@ const TopBar = ({ history }) => {
   return (
     <AppBar position="static">
       <Toolbar>
+        <img src={fridgeIcon} alt="" width="40px"/>
         <Typography className={classes.title}>Da Vinci's Fridge</Typography>
         <IconButton color="secondary" onClick={handleUpload}>
           <CloudUploadIcon></CloudUploadIcon>
