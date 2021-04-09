@@ -73,9 +73,9 @@ const useStyles = makeStyles((theme) => ({
     display: "none",
   },
   art: {
-    width:"100%",
+    width: "100%",
     height: "100%",
-    objectFit:"contain"
+    objectFit: "contain",
   },
 }));
 const Search = () => {
@@ -135,23 +135,24 @@ const Search = () => {
         let a = true;
         for (let key in metadata.customMetadata) {
           var value = metadata.customMetadata[key];
-          if (key === "subCategory" && subCategory.value !== "") {
+
+          if (key === "SubCategory" && subCategory.value !== "") {
             if (value !== subCategory.value) {
               a = false;
             }
           }
 
-          if (key === "education" && educationForm.value !== "All") {
+          if (key === "Education" && educationForm.value !== "All") {
             if (value !== educationForm.value) {
               a = false;
             }
           }
-          if (key === "artists" && artist.value !== "All") {
+          if (key === "Artist" && artist.value !== "All") {
             if (value !== artist.value) {
               a = false;
             }
           }
-          if (key === "age" && age.value !== "") {
+          if (key === "Age" && age.value !== "") {
             if (value !== age.value) {
               a = false;
             }

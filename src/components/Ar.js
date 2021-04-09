@@ -7,6 +7,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 const Ar = ({ Art3D, Art, Type, Return }) => {
   let geo = null;
+  console.log(Type)
   if (Type === "2D") {
     geo = (
       <>
@@ -85,7 +86,7 @@ const Ar = ({ Art3D, Art, Type, Return }) => {
 
   return (
     <div>
-      <div className>
+      <div>
         <AFrameRenderer arToolKit={{ sourceType: "webcam" }}>
           <Marker parameters={{ preset: "hiro" }}>{geo}</Marker>
         </AFrameRenderer>

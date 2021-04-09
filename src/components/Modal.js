@@ -8,6 +8,13 @@ import {
   List,
   ListItemText,
   Divider,
+  ListItem,
+  Dialog,
+  DialogTitle,
+  DialogContentText,
+  DialogActions,
+  DialogContent,
+  Button,
   IconButton,
 } from "@material-ui/core";
 import { AuthContext } from "../services/Auth";
@@ -15,6 +22,7 @@ import Ar from "../components/Ar";
 import InfoIcon from "@material-ui/icons/Info";
 import ClearIcon from "@material-ui/icons/Clear";
 import arIcon from "../assets/img/arIcon.svg";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles({
   view: {
@@ -26,7 +34,6 @@ const useStyles = makeStyles({
     backgroundColor: "black",
   },
   image: {
-    display: "block",
     maxWidth: "100%",
     maxHeight: "100%",
     marginLeft: "auto",
@@ -36,13 +43,19 @@ const useStyles = makeStyles({
   tools: {
     textAlign: "end",
   },
+  imageC: {
+    width: "100%",
+    height: "90%",
+    display: "flex",
+  },
 });
 
-const Modal = ({ selected, Close, CloseGallery }) => {
+const Modal = ({ selected, Close, CloseGallery, history }) => {
   const { currentUser } = useContext(AuthContext);
   const classes = useStyles();
   const [metaData, setMetaData] = useState({});
   const [parts, setParts] = useState([]);
+  const [open, setOpen] = useState(false);
   const [state, setState] = React.useState({
     bottom: false,
   });
@@ -75,6 +88,45 @@ const Modal = ({ selected, Close, CloseGallery }) => {
     window.location.reload();
   };
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setOpen(false);
+  };
+
+  const handleDelete = () => {
+    handleDialogClose();
+
+    if (metaData["Type"] === "2D" || metaData["Type"] === "Sphere") {
+      const storageRef = fbase.storage().refFromURL(selected.Url);
+      storageRef.delete();
+      const fb = fbase.firestore();
+      const unsubscribe = fb
+        .collection("Users")
+        .doc(currentUser.uid)
+        .collection("Pictures")
+        .doc(selected.id)
+        .delete();
+    } else {
+      for (var key in parts) {
+        var val = parts[key];
+        const storageRef = fbase.storage().refFromURL(val);
+        storageRef.delete();
+      }
+      const fb = fbase.firestore();
+      const unsubscribe = fb
+        .collection("Users")
+        .doc(currentUser.uid)
+        .collection("Pictures")
+        .doc(selected.id)
+        .delete();
+    }
+
+    Close(null);
+  };
+
   useEffect(() => {
     let data = {};
     let array = [];
@@ -88,7 +140,7 @@ const Modal = ({ selected, Close, CloseGallery }) => {
       setMetaData(data);
     });
     console.log(555);
-    if (data.type !== "2D" && data.type !== "Sphere") {
+    if (data.Type !== "2D" && data.Type !== "Sphere") {
       const fb = fbase.firestore();
       unsubscribe = fb
         .collection("Users")
@@ -115,6 +167,7 @@ const Modal = ({ selected, Close, CloseGallery }) => {
               <IconButton onClick={() => handleAr()}>
                 <img src={arIcon} alt="" />
               </IconButton>
+
               <React.Fragment>
                 <IconButton
                   aria-controls="menu-appbar"
@@ -131,13 +184,23 @@ const Modal = ({ selected, Close, CloseGallery }) => {
                   <List>
                     {Object.entries(metaData).map(([key, value]) => (
                       <>
-                        <ListItemText key={key} primary={key + ": " + value} />
+                        <ListItem>
+                          <ListItemText
+                            key={key}
+                            primary={"" + key + ":  " + value}
+                          />
+                        </ListItem>
                         <Divider key={key + "1"} />
                       </>
                     ))}
                   </List>
                 </Drawer>
               </React.Fragment>
+
+              <IconButton onClick={() => handleClickOpen()}>
+                <DeleteIcon color="primary"></DeleteIcon>
+              </IconButton>
+
               <IconButton
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
@@ -146,7 +209,9 @@ const Modal = ({ selected, Close, CloseGallery }) => {
                 <ClearIcon color="primary"> </ClearIcon>
               </IconButton>
             </div>
-            <img className={classes.image} src={selected.Url} alt="big pic" />
+            <div className={classes.imageC}>
+              <img className={classes.image} src={selected.Url} alt="big pic" />
+            </div>
           </Box>
         </div>
       ) : null}
@@ -156,11 +221,39 @@ const Modal = ({ selected, Close, CloseGallery }) => {
           <Ar
             Art3D={parts}
             Art={selected.Url}
-            Type={metaData.type}
+            Type={metaData.Type}
             Return={handleArExit}
           />
         </div>
       ) : null}
+      <div>
+        <Dialog
+          open={open}
+          onClose={handleDialogClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"Art Deletion"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to delete this artwork? This action can't be
+              undone
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="outlined"
+              onClick={handleDialogClose}
+              color="primary"
+            >
+              Cancel
+            </Button>
+            <Button onClick={() => handleDelete()} color="primary" autoFocus>
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </div>
   );
 };
