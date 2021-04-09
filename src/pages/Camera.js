@@ -1,14 +1,7 @@
 import React, { useState } from "react";
 import Webcam from "react-webcam";
-import {
-  Box,
-  makeStyles,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Fab,
-} from "@material-ui/core";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import { Box, makeStyles, IconButton, Fab } from "@material-ui/core";
+import TopBarBack from "../components/TopBarBack";
 import CameraIcon from "@material-ui/icons/Camera";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import ClearIcon from "@material-ui/icons/Clear";
@@ -50,9 +43,7 @@ const Camera = ({ history }) => {
   const videoConstraints = {
     facingMode: { exact: "environment" },
   };
-  const handleBack = () => {
-    history.push("/");
-  };
+
   const webcamRef = React.useRef(null);
   const [image, setImage] = useState(null);
   const [showImage, setShowImage] = useState(null);
@@ -69,13 +60,7 @@ const Camera = ({ history }) => {
 
   return (
     <div>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton onClick={() => handleBack()}>
-            <ArrowBackIcon color="secondary"></ArrowBackIcon>
-          </IconButton>
-        </Toolbar>
-      </AppBar>
+      <TopBarBack></TopBarBack>
       <Box className={classes.root}>
         <Webcam
           ref={webcamRef}

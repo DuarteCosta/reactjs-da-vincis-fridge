@@ -72,6 +72,11 @@ const useStyles = makeStyles((theme) => ({
   input: {
     display: "none",
   },
+  art: {
+    width:"100%",
+    height: "100%",
+    objectFit:"contain"
+  },
 }));
 const Search = () => {
   let [bar, setBar] = useState(null);

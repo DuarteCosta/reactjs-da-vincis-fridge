@@ -2,17 +2,10 @@ import React from "react";
 import { withRouter } from "react-router";
 
 import { AFrameRenderer, Marker } from "react-web-ar";
-import { makeStyles, AppBar, Toolbar, IconButton } from "@material-ui/core";
+import { AppBar, Toolbar, IconButton } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-const useStyles = makeStyles((theme) => ({
-  view: {},
-  view2: {},
-  camera: {},
-  bar: {},
-}));
 
-const Ar = ({ Art3D, Art, Type, Return, history }) => {
-  const classes = useStyles();
+const Ar = ({ Art3D, Art, Type, Return }) => {
   let geo = null;
   if (Type === "2D") {
     geo = (
@@ -76,7 +69,6 @@ const Ar = ({ Art3D, Art, Type, Return, history }) => {
   } else if (Type === "Cylinder") {
     geo = (
       <>
-    
         <a-cylinder cylinde={"photos:" + Art3D} height="3">
           <a-animation
             attribute="rotation"
@@ -92,14 +84,14 @@ const Ar = ({ Art3D, Art, Type, Return, history }) => {
   }
 
   return (
-    <div className={classes.view2}>
-      <div className={classes.view}>
+    <div>
+      <div className>
         <AFrameRenderer arToolKit={{ sourceType: "webcam" }}>
           <Marker parameters={{ preset: "hiro" }}>{geo}</Marker>
         </AFrameRenderer>
       </div>
 
-      <AppBar className={classes.bar} position="fixed">
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton onClick={() => Return()}>
             <ArrowBackIcon color="secondary"></ArrowBackIcon>

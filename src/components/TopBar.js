@@ -53,7 +53,7 @@ const TopBar = ({ history }) => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <img src={fridgeIcon} alt="" width="40px"/>
+        <img src={fridgeIcon} alt="" width="40px" height="40px" />
         <Typography className={classes.title}>Da Vinci's Fridge</Typography>
         <IconButton color="secondary" onClick={handleUpload}>
           <CloudUploadIcon></CloudUploadIcon>

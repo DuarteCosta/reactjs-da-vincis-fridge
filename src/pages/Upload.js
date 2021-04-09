@@ -1,7 +1,6 @@
 import React from "react";
 import TopBarBack from "../components/TopBarBack";
 import { withRouter } from "react-router";
-//import fbase from "../services/FBase";
 import fridge1 from "../assets/img/FRIDGE1.jpg";
 import fridge2 from "../assets/img/FRIDGE2.jpg";
 import {
@@ -15,10 +14,7 @@ import {
   Typography,
 } from "@material-ui/core";
 
-//const useStyles = makeStyles((theme) => ({}));
-// change to  popup
 const Upload = ({ history }) => {
-  //const classes = useStyles();
   const handleClick2D = (event) => {
     history.push("/Upload2D");
   };

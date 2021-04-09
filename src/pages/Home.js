@@ -18,8 +18,11 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-around",
     overflow: "hidden",
   },
-  gridList: {},
-  art: {},
+  art: {
+    width:"100%",
+    height: "100%",
+    objectFit:"contain"
+  },
   
 }));
 
@@ -73,7 +76,6 @@ const Home = () => {
               spacing={30}
               cellHeight={cellH()}
               cols={1}
-              className={classes.gridList}
             >
               {photos.map((art) => (
                 <GridListTile key={art.id}>
