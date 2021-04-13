@@ -23,6 +23,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import ClearIcon from "@material-ui/icons/Clear";
 import arIcon from "../assets/img/arIcon.svg";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { ContactSupportOutlined } from "@material-ui/icons";
 
 const useStyles = makeStyles({
   view: {
@@ -128,16 +129,34 @@ const Modal = ({ selected, Close, CloseGallery, history }) => {
   useEffect(() => {
     let data = {};
     let array = [];
+    const artistsData = [];
     let unsubscribe = null;
+
     const storageRef = fbase.storage().refFromURL(selected.Url);
     storageRef.getMetadata().then((metadata) => {
       for (var key in metadata.customMetadata) {
-        var value = metadata.customMetadata[key];
-        data[key] = value;
+        if (key === "Artist") {
+          let name = [];
+          const fb0 = fbase.firestore();
+          fb0
+            .collection("Users")
+            .doc(currentUser.uid)
+            .collection("Children")
+            .doc(metadata.customMetadata[key])
+            .get()
+            .then((doc) => {
+              name.push(doc.data().Name);
+            });
+          data[key] = name;
+        } else {
+          var value = metadata.customMetadata[key];
+          data[key] = value;
+        }
       }
       setMetaData(data);
     });
     console.log(555);
+
     if (data.Type !== "2D" && data.Type !== "Sphere") {
       const fb = fbase.firestore();
       unsubscribe = fb
