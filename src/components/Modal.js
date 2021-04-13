@@ -129,7 +129,6 @@ const Modal = ({ selected, Close, CloseGallery, history }) => {
   useEffect(() => {
     let data = {};
     let array = [];
-    const artistsData = [];
     let unsubscribe = null;
 
     const storageRef = fbase.storage().refFromURL(selected.Url);
