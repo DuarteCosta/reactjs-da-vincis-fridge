@@ -103,8 +103,7 @@ const Modal = ({ selected, Close, CloseGallery, history }) => {
       const storageRef = fbase.storage().refFromURL(selected.Url);
       storageRef.delete();
       const fb = fbase.firestore();
-      const unsubscribe = fb
-        .collection("Users")
+      fb.collection("Users")
         .doc(currentUser.uid)
         .collection("Pictures")
         .doc(selected.id)
@@ -116,8 +115,7 @@ const Modal = ({ selected, Close, CloseGallery, history }) => {
         storageRef.delete();
       }
       const fb = fbase.firestore();
-      const unsubscribe = fb
-        .collection("Users")
+      fb.collection("Users")
         .doc(currentUser.uid)
         .collection("Pictures")
         .doc(selected.id)
