@@ -3,6 +3,7 @@ import NavBar from "../components/NavBar";
 import TopBar from "../components/TopBar";
 import fbase from "../services/FBase";
 import { AuthContext } from "../services/Auth";
+import Modal from "../components/Modal";
 
 import {
   Box,
@@ -87,6 +88,7 @@ const Search = () => {
   const [gallery2, setgallery2] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const [allPhotos, setAllPhotos] = useState([]);
+  const [fullPhoto, setFullPhoto] = useState(null);
   const theme = useTheme();
   const tablet = useMediaQuery(theme.breakpoints.up("sm"));
   const desktop = useMediaQuery(theme.breakpoints.up("lg"));
@@ -100,8 +102,10 @@ const Search = () => {
       .collection("Pictures")
       .onSnapshot((snapshot) => {
         let art = [];
-        snapshot.forEach((doc) => art.push(doc.data().Url));
+       // snapshot.forEach((doc) => art.push(doc.data().Url));
+        snapshot.forEach((doc) => art.push({ ...doc.data(), id: doc.id }));
         setAllPhotos(art);
+        console.log(art)
       });
 
     const fb = fbase.firestore();
@@ -130,7 +134,7 @@ const Search = () => {
     );
 
     for (let i = 0; i < allPhotos.length; i++) {
-      const storageRef = fbase.storage().refFromURL(allPhotos[i]);
+      const storageRef = fbase.storage().refFromURL(allPhotos[i].Url);
       await storageRef.getMetadata().then((metadata) => {
         let a = true;
         for (let key in metadata.customMetadata) {
@@ -271,6 +275,7 @@ const Search = () => {
               </form>
             </Paper>
           </Box>
+          <NavBar></NavBar>
         </div>
       ) : null}
       {gallery2 ? (
@@ -293,7 +298,12 @@ const Search = () => {
             >
               {photos.map((art) => (
                 <GridListTile key={art.id}>
-                  <img src={art} alt="" className={classes.art} />
+                  <img
+                    src={art.Url}
+                    alt=""
+                    className={classes.art}
+                    onClick={() => setFullPhoto(art)}
+                  />
                 </GridListTile>
               ))}
             </GridList>
@@ -301,7 +311,17 @@ const Search = () => {
           <NavBar></NavBar>
         </div>
       ) : null}
-      <NavBar> </NavBar>
+     
+
+      {fullPhoto ? (
+        <div>
+          <Modal
+            Close={setFullPhoto}
+            selected={fullPhoto}
+            CloseGallery={setgallery2}
+          />
+        </div>
+      ) : null}
     </div>
   );
 };
