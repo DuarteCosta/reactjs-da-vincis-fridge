@@ -412,7 +412,7 @@ const Upload3D = ({ history }) => {
           <CardMedia className={classes.pic} component="img" image={img0} />
 
           <CardActions>
-            <Typography>Top Base</Typography>
+            <Typography>Top Face</Typography>
             <input
               accept="image/*"
               className={classes.input}
