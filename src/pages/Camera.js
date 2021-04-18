@@ -49,24 +49,20 @@ const educations = [
   { value: "Other" },
 ];
 
-const Cube = [
-  { value: "Front Face" },
-  { value: "Top Face" },
-  { value: "Bottom Face" },
-  { value: "Right Face" },
-  { value: "Left Face" },
-  { value: "Back Face" },
-];
+const shapes = {
+  Cube: [
+    "Front Face",
+    "Top Face",
+    "Bottom Face",
+    "Right Face",
+    "Left Face",
+    "Back Face",
+  ],
 
-const Cone = [{ value: "Curved Face" }, { value: "Base Face" }];
-
-const Sphere = [{ value: "Ciruclar Face" }];
-
-const Cylinder = [
-  { value: "Top Face" },
-  { value: "Curved Face" },
-  { value: "Bottom Face" },
-];
+  Cone: ["Curved Face", "Base Face"],
+  Sphere: ["Ciruclar Face"],
+  Cylinder: ["Top Face", "Curved Face", "Bottom Face"],
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -117,14 +113,16 @@ const Camera = ({ history }) => {
   let [image, setImage] = useState(null);
   const [showImage, setShowImage] = useState(null);
   const [showCamera, setShowCamera] = useState(null);
-  const [allImages, setAllImages] = useState(null);
   const [showImage3D, setShowImage3D] = useState(null);
   const [showCamera3D, setShowCamera3D] = useState(null);
   const [showOptions, setShowOptions] = useState(true);
   const [showForm, setShowForm] = useState(null);
   const [artists, setArtists] = useState([]);
   let [bar, setBar] = useState(null);
+  let [faces, setFaces] = useState([]);
   const [type, setType] = useState(null);
+  const [all, setAll] = useState([]);
+  let [i, setI] = useState(0);
 
   useEffect(() => {
     const fb = fbase.firestore();
@@ -160,6 +158,10 @@ const Camera = ({ history }) => {
     setShowImage(null);
   };
 
+  const handleClose3D = () => {
+    setShowImage3D(null);
+  };
+
   const handleNext2D = () => {
     setShowCamera(null);
     setShowImage(null);
@@ -176,9 +178,17 @@ const Camera = ({ history }) => {
     setShowOptions(null);
     setShowCamera3D(true);
     setType(shape);
+    if (shape === "Cube") {
+      faces.push(shapes.Cube);
+    } else if (shape === "Cone") {
+      faces.push(shapes.Cone);
+    } else if (shape === "Sphere") {
+      faces.push(shapes.Sphere);
+    } else {
+      faces.push(shapes.Cylinder);
+    }
   };
 
- 
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
 
@@ -186,24 +196,55 @@ const Camera = ({ history }) => {
     setShowImage(true);
   }, [webcamRef]);
 
-
   const capture3D = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
 
     setImage(imageSrc);
-    setShowImage(true);
+    setShowImage3D(true);
+    all.push(imageSrc);
   }, [webcamRef]);
 
   const handleNext3D = () => {
-    setShowCamera(null);
-    setShowImage(null);
-    setShowForm(true);
+    if (type === "Cone") {
+      if (i === 1) {
+        setShowCamera3D(null);
+        setShowImage3D(null);
+        setShowForm(true);
+        console.log(all);
+      } else {
+        setShowForm(null);
+        setShowImage3D(null);
+        setI(i + 1);
+      }
+    } else if (type === "Cube") {
+      if (i === 5) {
+        setShowCamera3D(null);
+        setShowImage3D(null);
+        setShowForm(true);
+        console.log(all);
+      } else {
+        setShowForm(null);
+        setShowImage3D(null);
+        setI(i + 1);
+      }
+    } else if (type === "Sphere") {
+      setShowCamera3D(null);
+      setShowImage3D(null);
+      setShowForm(true);
+      console.log(all);
+    } else if (type === "Cylinder") {
+      if (i === 2) {
+        setShowCamera3D(null);
+        setShowImage3D(null);
+        setShowForm(true);
+        console.log(all);
+      } else {
+        setShowForm(null);
+        setShowImage3D(null);
+        setI(i + 1);
+      }
+    }
   };
-
-
-
-
-
 
   const handleSubmition = async (event) => {
     setBar(
@@ -211,36 +252,96 @@ const Camera = ({ history }) => {
         <LinearProgress />
       </>
     );
+    if (type === "2D") {
+      event.preventDefault();
+      const im = dataURLtoBlob(image);
 
-    event.preventDefault();
-    const i = dataURLtoBlob(image);
-    console.log(i);
-    const { artist, educationForm, subCategory, age } = event.target.elements;
-    const metadata = {
-      customMetadata: {
-        Artist: artist.value,
-        Age: age.value,
-        Education: educationForm.value,
-        SubCategory: subCategory.value,
-        Type: type,
-      },
-    };
-    const storageRef = fbase
-      .storage()
-      .ref("Users/" + currentUser.uid + "/Pictures");
-    const fileRef = storageRef.child(new Date().getTime().toString());
-    await fileRef.put(i, metadata);
-    const url = await fileRef.getDownloadURL();
-    await fbase
-      .firestore()
-      .collection("Users")
-      .doc(currentUser.uid)
-      .collection("Pictures")
-      .add({
-        Url: url,
-      });
+      const { artist, educationForm, subCategory, age } = event.target.elements;
+      const metadata = {
+        customMetadata: {
+          Artist: artist.value,
+          Age: age.value,
+          Education: educationForm.value,
+          SubCategory: subCategory.value,
+          Type: type,
+        },
+      };
+      const storageRef = fbase
+        .storage()
+        .ref("Users/" + currentUser.uid + "/Pictures");
+      const fileRef = storageRef.child(new Date().getTime().toString());
+      await fileRef.put(im, metadata);
+      const url = await fileRef.getDownloadURL();
+      await fbase
+        .firestore()
+        .collection("Users")
+        .doc(currentUser.uid)
+        .collection("Pictures")
+        .add({
+          Url: url,
+        });
 
-    history.push("/");
+      history.push("/");
+    } else {
+      event.preventDefault();
+      const { artist, educationForm, subCategory, age } = event.target.elements;
+      const metadata = {
+        customMetadata: {
+          Artist: artist.value,
+          Age: age.value,
+          Education: educationForm.value,
+          SubCategory: subCategory.value,
+          Type: type,
+        },
+      };
+      let d = 0;
+      let id = null;
+
+      for (let c of all) {
+        c = dataURLtoBlob(c);
+        if (d === 0) {
+          d = 1;
+          const storageRef = fbase
+            .storage()
+            .ref("Users/" + currentUser.uid + "/Pictures");
+          const fileRef = storageRef.child(new Date().getTime().toString());
+          await fileRef.put(c, metadata);
+
+          const url = await fileRef.getDownloadURL();
+          id = await fbase
+            .firestore()
+            .collection("Users")
+            .doc(currentUser.uid)
+            .collection("Pictures")
+            .add({
+              Url: url,
+            });
+        } else {
+          const storageRef1 = fbase
+            .storage()
+            .ref("Users/" + currentUser.uid + "/Pictures");
+          const fileRef1 = storageRef1.child(new Date().getTime().toString());
+          await fileRef1.put(c, metadata);
+
+          const url1 = await fileRef1.getDownloadURL();
+
+          await fbase
+            .firestore()
+            .collection("Users")
+            .doc(currentUser.uid)
+            .collection("Pictures")
+            .doc(id.id)
+            .set(
+              {
+                [d]: url1,
+              },
+              { merge: true }
+            );
+          d = d + 1;
+        }
+      }
+      history.push("/");
+    }
   };
 
   return (
@@ -432,7 +533,7 @@ const Camera = ({ history }) => {
         <Box className={classes.root}>
           <Webcam
             ref={webcamRef}
-            // videoConstraints={videoConstraints}
+            videoConstraints={videoConstraints}
             screenshotFormat="image/jpeg"
             audio={false}
             forceScreenshotSourceSize="true"
@@ -450,7 +551,7 @@ const Camera = ({ history }) => {
             <IconButton
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={() => handleNext3D()}
+              onClick={() => handleNext2D()}
             >
               <CheckCircleIcon color="primary"> </CheckCircleIcon>
             </IconButton>
@@ -478,9 +579,10 @@ const Camera = ({ history }) => {
 
       {showCamera3D ? (
         <Box className={classes.root}>
+          <Typography>Take a picture of the art's {faces[0][i]} </Typography>
           <Webcam
             ref={webcamRef}
-            // videoConstraints={videoConstraints}
+            videoConstraints={videoConstraints}
             screenshotFormat="image/jpeg"
             audio={false}
             forceScreenshotSourceSize="true"
@@ -498,7 +600,7 @@ const Camera = ({ history }) => {
             <IconButton
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={() => handleNext2D()}
+              onClick={() => handleNext3D()}
             >
               <CheckCircleIcon color="primary"> </CheckCircleIcon>
             </IconButton>
@@ -506,7 +608,7 @@ const Camera = ({ history }) => {
               <IconButton
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
-                onClick={() => handleClose()}
+                onClick={() => handleClose3D()}
               >
                 <SaveAltIcon color="primary"> </SaveAltIcon>
               </IconButton>
@@ -515,7 +617,7 @@ const Camera = ({ history }) => {
             <IconButton
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={() => handleClose()}
+              onClick={() => handleClose3D()}
             >
               <ClearIcon color="primary"> </ClearIcon>
             </IconButton>
