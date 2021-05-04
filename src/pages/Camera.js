@@ -60,7 +60,7 @@ const shapes = {
   ],
 
   Cone: ["Curved Face", "Base Face"],
-  Sphere: ["Ciruclar Face"],
+  Sphere: ["Circular Face"],
   Cylinder: ["Top Face", "Curved Face", "Bottom Face"],
 };
 
@@ -201,10 +201,11 @@ const Camera = ({ history }) => {
 
     setImage(imageSrc);
     setShowImage3D(true);
-    all.push(imageSrc);
+    //all.push(imageSrc);
   }, [webcamRef]);
 
   const handleNext3D = () => {
+    all.push(image);
     if (type === "Cone") {
       if (i === 1) {
         setShowCamera3D(null);
