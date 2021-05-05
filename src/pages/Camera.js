@@ -537,7 +537,7 @@ const Camera = ({ history }) => {
             videoConstraints={videoConstraints}
             screenshotFormat="image/jpeg"
             audio={false}
-            forceScreenshotSourceSize="true"
+           // forceScreenshotSourceSize="true"
           />
 
           <Fab className={classes.cameraB} onClick={capture} color="primary">
