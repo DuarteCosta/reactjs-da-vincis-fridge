@@ -123,7 +123,7 @@ const Camera = ({ history }) => {
   const [type, setType] = useState(null);
   const [all, setAll] = useState([]);
   let [i, setI] = useState(0);
-
+  const [disabled, setDisabled] = useState(true);
   useEffect(() => {
     const fb = fbase.firestore();
     const unsubscribe = fb
@@ -136,9 +136,12 @@ const Camera = ({ history }) => {
           artistsData.push({ ...docs.data(), id: docs.id })
         );
         setArtists(artistsData);
+        if (artistsData.length > 0) {
+          setDisabled(false);
+        }
         console.log("Read");
       });
-
+     
     return unsubscribe;
   }, [currentUser.uid]);
 
@@ -518,7 +521,7 @@ const Camera = ({ history }) => {
                     </Grid>
 
                     <Grid item>
-                      <Fab color="primary" type="submit">
+                      <Fab disabled={disabled} color="primary" type="submit">
                         <DoneIcon />
                       </Fab>
                     </Grid>
