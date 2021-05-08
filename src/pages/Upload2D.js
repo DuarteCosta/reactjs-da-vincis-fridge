@@ -72,7 +72,7 @@ const Upload2D = ({ history }) => {
 
   const [artists, setArtists] = useState([]);
   const [imagePreview, setImagePreview] = useState(fridge3);
-
+  const [disabled, setDisabled] = useState(true)
   const [file, setFile] = useState(null);
   let [bar, setBar] = useState(null);
 
@@ -83,6 +83,10 @@ const Upload2D = ({ history }) => {
     });
     reader.readAsDataURL(event.target.files[0]);
     setFile(event.target.files[0]);
+    if(artists.length >0 ){
+      setDisabled(false);
+    } 
+    
   };
 
   const handleSubmition = async (event) => {
@@ -246,7 +250,7 @@ const Upload2D = ({ history }) => {
                 </Card>
                 <Grid item>
                   <Box pt={5}>
-                    <Fab color="primary" type="submit">
+                    <Fab  disabled={disabled}  color="primary" type="submit">
                       <DoneIcon />
                     </Fab>
                   </Box>
