@@ -94,7 +94,7 @@ const Upload3D = ({ history }) => {
   const [shape, setShape] = useState("Cube");
   const [files, setFiles] = useState([]);
   let [bar, setBar] = useState(null);
-
+  const [disabled, setDisabled] = useState(true);
   const handleShape = (event) => {
     setShape(event.target.value);
     reset();
@@ -122,6 +122,9 @@ const Upload3D = ({ history }) => {
     setFiles((previousState) => ({
       myArray: [...(previousState.myArray || []), event.target.files[0]],
     }));
+    if(artists.length >0 ){
+      setDisabled(false);
+    } 
   };
 
   const reset = () => {
@@ -706,7 +709,7 @@ const Upload3D = ({ history }) => {
               </Grid>
               <Grid item>
                 <Box pt={5}>
-                  <Fab color="primary" type="submit">
+                  <Fab disabled={disabled}  color="primary" type="submit">
                     <DoneIcon />
                   </Fab>
                 </Box>
