@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
 const Camera = ({ history }) => {
   const classes = useStyles();
   const videoConstraints = {
-    facingMode: { exact: "environment" },
+    facingMode: "environment" 
   };
 
   const webcamRef = React.useRef(null);
@@ -124,6 +124,7 @@ const Camera = ({ history }) => {
   const [all, setAll] = useState([]);
   let [i, setI] = useState(0);
   const [disabled, setDisabled] = useState(true);
+
   useEffect(() => {
     const fb = fbase.firestore();
     const unsubscribe = fb
