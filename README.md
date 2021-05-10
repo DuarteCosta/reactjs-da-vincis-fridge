@@ -1,5 +1,7 @@
 # Da Vinci's Fridge App
 
+A Digitilisation Tool and Virtual Gallery for Children Artwork
+
 ## Available Scripts
 
 In the project directory, you should run:
